@@ -1,0 +1,74 @@
+from news.models import *
+
+#Создаем пользователей
+
+u1 = User.objects.create_user(username='Boris')
+u2 = User.objects.create_user(username='Anastasia')
+
+#Создаём авторов
+
+Author.objects.create(authorUser=u1)
+Author.objects.create(authorUser=u2)
+
+#Создаём категории
+
+Category.objects.create(category='Политика') 
+Category.objects.create(category='Спорт')
+Category.objects.create(category='Бизнес') 
+Category.objects.create(category='IT') 
+
+#Создаём посты
+
+author = Author.objects.get(id=1) 
+
+Post.objects.create(author=author, type_posts='PT', title='title', text='bigtexts')
+Post.objects.create(author=author, type_posts='PT', title='title1', text='bigtexts1')
+Post.objects.create(author=author, type_posts='NS', title='title2', text='bigtexts2')
+
+#Определяем категории постов
+
+Post.objects.get(id=1).postCategory.add(Category.objects.get(category='Политика'))
+Post.objects.get(id=1).postCategory.add(Category.objects.get(category='Спорт'))    
+Post.objects.get(id=2).postCategory.add(Category.objects.get(category='Спорт')) 
+Post.objects.get(id=2).postCategory.add(Category.objects.get(category='IT'))    
+Post.objects.get(id=3).postCategory.add(Category.objects.get(category='Бизнес')) 
+Post.objects.get(id=3).postCategory.add(Category.objects.get(category='IT'))  
+
+#Создаём комментарии
+
+Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=1).authorUser, text_comments='textcomments')
+Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=2).authorUser, text_comments='textcomments1') 
+Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=2).authorUser, text_comments='textcomments2')
+Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=1).authorUser, text_comments='textcomments3')
+
+#Добавляем рейтинги
+
+Post.objects.get(id=1).like()
+Post.objects.get(id=1).like() 
+Post.objects.get(id=1).like()
+Comment.objects.get(id=3).dislake() 
+Comment.objects.get(id=3).dislake()
+
+#Смотрим рейтинг
+
+Author.objects.get(id=1).rating()
+Author.objects.get(id=1).ratingAuthor
+
+#Выводим информацию
+
+a = Author.objects.order_by('-ratingAuthor')[:1] 
+>>> for i in a:
+...     i.ratingAuthor
+...     i.authorUser.username
+
+
+b = Post.objects.order_by('-rating')[:1]          
+>>> for i in b:
+...     i.dateCreate
+...     i.author.authorUser
+...     i.rating
+...     i.title
+...     i.text
+
+
+
