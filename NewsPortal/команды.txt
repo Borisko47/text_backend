@@ -54,21 +54,24 @@ Comment.objects.get(id=3).dislake()
 Author.objects.get(id=1).rating()
 Author.objects.get(id=1).ratingAuthor
 
-#Выводим информацию
+#Выводим информацию о рейтинге и имя автора
 
 a = Author.objects.order_by('-ratingAuthor')[:1] 
 >>> for i in a:
 ...     i.ratingAuthor
 ...     i.authorUser.username
 
+#Получаем всю нужную информацию о статье, которая большая по рейтингу
 
-b = Post.objects.order_by('-rating')[:1]          
->>> for i in b:
-...     i.dateCreate
-...     i.author.authorUser
-...     i.rating
-...     i.title
-...     i.text
+Post.objects.all().order_by('-rating')[:1].values('dateCreate', 'author__authorUser__username', 'rating', 'title') 
+
+#Получаем превью
+
+Post.objects.order_by('-rating')[0].preview()
+
+#Получаем все комментарии
+
+Post.objects.order_by('-rating')[0].comment_set.all()
 
 
 
