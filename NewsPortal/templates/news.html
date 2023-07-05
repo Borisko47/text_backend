@@ -1,0 +1,27 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_censor %}
+
+{% block title %}
+ALL NEWS
+{% endblock title %}
+
+{% if post %}
+    {% block content %}
+        <h1>ALL NEWS</h1>
+        <p>Всего статей: {{ post|length }}</p>
+
+        </br>
+            <ul class="nobullet">
+                {% for i in post %}
+                <h2>{{ i.title|filter_message }}</h2>
+                <p>{{ i.dateCreate|date:'d M Y' }}</p>
+                <p>{{ i.text|truncatewords:15|filter_message }}</p>
+                <hr>
+                {% endfor %}
+            </ul>
+
+    {% endblock content %}
+
+{% else %}
+    <h1>Новостей нет!</h1>>
+{% endif %}

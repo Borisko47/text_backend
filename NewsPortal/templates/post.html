@@ -1,0 +1,13 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_censor %}
+
+{% block title %}
+NEWS
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ onepost.title }}</h1>
+    <p>{{ onepost.dateCreate|date:'d M Y' }}</p>
+    <p>{{ onepost.text }}</p>
+{% endblock content %}
