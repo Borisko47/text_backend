@@ -1,0 +1,50 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_censor %}
+{% load custom_tags %}
+
+{% block title %}
+ALL NEWS
+{% endblock title %}
+
+{% if post %}
+    {% block content %}
+        <h1>ALL NEWS</h1>
+        <p>Всего статей: {{ post|length }}</p>
+        <form action="" method="get">
+       {{ filterset.form.as_p }}
+       <input type="submit" value="Найти" />
+   </form>
+
+        </br>
+            <ul class="nobullet">
+                {% for i in post %}
+                <h2>{{ i.title|filter_message }}</h2>
+                <p>{{ i.dateCreate|date:'d M Y' }}</p>
+                <p>{{ i.text|truncatewords:15|filter_message }}</p>
+                <hr>
+                {% endfor %}
+            </ul>
+{% if page_obj.has_previous %}
+<a href="?{% url_replace page=1 %}">1</a>
+{% if page_obj.previous_page_number != 1 %}
+...
+<a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+{% endif %}
+{% endif %}
+
+   {{ page_obj.number }}
+
+{% if page_obj.has_next %}
+<a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+{% if paginator.num_pages != page_obj.next_page_number %}
+...
+<a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+{% endif %}
+{% endif %}
+
+
+{% endblock content %}
+
+{% else %}
+    <h1>Новостей нет!</h1>>
+{% endif %}
